@@ -1,36 +1,44 @@
-//notizen anzeigen lassen
+let allNotes = {
+  notesTitles: [],
+  notes: [],
+  trashNotesTitles: [],
+  trashNotes: [],
+  archivNoteTitles: [],
+  archivNote: [],
+};
 
-let notesTitle = [];
-let notes = [];
+function moveNote(indexNote, startKey, destinationKey) {
+  let note = allNotes[startKey].splice(indexNote, 1);
+  allNotes[destinationKey].push(note[0]);
 
-let trashNotesTitles = [];
-let trashNotes = [];
+  let notesTitle = allNotes[startKey + "Titles"].splice(indexNote, 1);
+  allNotes[destinationKey + "Titles"].push(notesTitle[0]);
 
-let archivTitle = [];
-let archivNote = [];
+  saveToLocalStorage();
+  saveDeletedNotices();
+  saveArchiveNotes();
 
-// -> wann werden sie angezeigt ?
+  renderNotes();
+  renderTrashNotes();
+  renderArchivNotes();
+}
 
 function renderNotes() {
-  // ich muss definieren wo sie anzuzeigen sind
-
   let contentRef = document.getElementById("content");
   contentRef.innerHTML = "";
 
-  for (let indexNote = 0; indexNote < notes.length; indexNote++) {
+  for (let indexNote = 0; indexNote < allNotes.notes.length; indexNote++) {
     contentRef.innerHTML += getNoteTemplate(indexNote);
   }
 }
 
 function renderTrashNotes() {
-  // ich muss definieren wo sie anzuzeigen sind
-
   let trashContentRef = document.getElementById("trash_content");
   trashContentRef.innerHTML = "";
 
   for (
     let indexTrashNote = 0;
-    indexTrashNote < trashNotes.length;
+    indexTrashNote < allNotes.trashNotes.length;
     indexTrashNote++
   ) {
     trashContentRef.innerHTML += getTrashNoteTemplate(indexTrashNote);
@@ -38,35 +46,29 @@ function renderTrashNotes() {
 }
 
 function renderArchivNotes() {
-  // ich muss definieren wo sie anzuzeigen sind
-
   let archivContentRef = document.getElementById("archiv_content");
   archivContentRef.innerHTML = "";
 
   for (
     let indexArchivNote = 0;
-    indexArchivNote < archivNote.length;
+    indexArchivNote < allNotes.archivNote.length;
     indexArchivNote++
   ) {
     archivContentRef.innerHTML += getArchivNoteTemplate(indexArchivNote);
   }
 }
 
-// eingabe vom user definieren
-// eingabe auslesen
-// eingabe speichern
-// eingabe anzeigen lassen
-
-function saveData() {
+function addNote() {
   let inputRef = document.getElementById("note_input");
   let inputTitle = document.getElementById("titles_input");
+  let noteInput = inputRef.value;
+  let noteTitle = inputTitle.value;
 
-  if (inputRef.value != "") {
-    notes.push(inputRef.value);
+  if (noteInput == "" || noteTitle == "") {
   }
-  if (inputTitle.value != "") {
-    notesTitle.push(inputTitle.value);
-  }
+
+  allNotes.notes.push(noteInput);
+  allNotes.notesTitles.push(noteTitle);
 
   saveToLocalStorage();
   renderNotes();
@@ -75,94 +77,22 @@ function saveData() {
   inputTitle.value = "";
 }
 
-//notizen hinzufügen
-
-/*function addNote() {
-  let noteInputRef = document.getElementById("note_input");
-  let noteInput = noteInputRef.value;
-  //eingabe den notizen hinzufügen
-  notes.push(noteInput);
-
+function deleteNote(indexTrashNote) {
+  allNotes.trashNotes.splice(indexTrashNote, 1);
+  allNotes.trashNotesTitles.splice(indexTrashNote, 1);
   renderNotes();
-
-  noteInputRef.value = "";
-}*/
-
-//noitzen löschen
-// welche notiz muss gelöscht werden
-// wann muss die notiz gelöscht werden
-// anzeige updaten
-
-/*function deleteNote(indexNote) {
-  let trashNote = notes.splice(indexNote, 1);
-  trashNotes.push(trashNote);
-  let trashNoteTitles = notesTitle.splice(indexNote, 1);
-  trashNotesTitles.push(trashNoteTitles);
-  renderNotes();
-  renderTrashNotes();
-}*/
-
-function deleteAndDisplayNotice(i) {
-  if (i >= 0 && i < notes.length) {
-    let deletedNote = notes.splice(i, 1)[0];
-    let deletedTitle = notesTitle.splice(i, 1)[0];
-    trashNotes.push(deletedNote);
-    trashNotesTitles.push(deletedTitle);
-    saveDeletedNotices();
-    saveToLocalStorage();
-  }
-  renderNotes();
-  renderTrashNotes();
-  renderArchivNotes();
-}
-
-function completeDeleteNote(indexTrashNote) {
-  trashNotes.splice(indexTrashNote, 1);
-  trashNotesTitles.splice(trashNotesTitles, 1);
   saveDeletedNotices();
   renderTrashNotes();
-}
-
-function archiveNote(i) {
-  if (i >= 0 && i < notes.length) {
-    let saveNote = notes.splice(i, 1)[0];
-    let saveTitle = notesTitle.splice(i, 1)[0];
-    archivNote.push(saveNote);
-    archivTitle.push(saveTitle);
-    saveDeletedNotices();
-    saveToLocalStorage();
-    saveArchiveNotes();
-    loadArchivNotes();
-  }
-  renderNotes();
-  renderTrashNotes();
-  renderArchivNotes();
-}
-
-function deleteArchivNote(i) {
-  if (i >= 0 && i < archivNote.length) {
-    let deletedArchivNote = archivNote.splice(i, 1)[0];
-    let deletedArchivTitle = archivTitle.splice(i, 1)[0];
-    trashNotes.push(deletedArchivNote);
-    trashNotesTitles.push(deletedArchivTitle);
-    saveDeletedNotices();
-    saveToLocalStorage();
-    saveArchiveNotes();
-    loadArchivNotes();
-  }
-  renderNotes();
-  renderTrashNotes();
-  renderArchivNotes();
 }
 
 function getFromLocalStorage() {
   let storedNotes = JSON.parse(localStorage.getItem("notes"));
   if (storedNotes) {
-    notes = storedNotes; // Lade die Notizen ins Array
+    allNotes.notes = storedNotes;
   }
-  let storedTitles = JSON.parse(localStorage.getItem("notesTitle"));
+  let storedTitles = JSON.parse(localStorage.getItem("notesTitles"));
   if (storedTitles) {
-    notesTitle = storedTitles; // Lade die Notizen ins Array
+    allNotes.notesTitles = storedTitles;
   }
 }
 
@@ -171,23 +101,21 @@ function loadDeletedNotices() {
     localStorage.getItem("trashNotesTitles")
   );
   if (storedTrashNotesTitles) {
-    trashNotesTitles = storedTrashNotesTitles; // Lade die Notizen ins Array
+    allNotes.trashNotesTitles = storedTrashNotesTitles;
   }
   let storedTrashNotes = JSON.parse(localStorage.getItem("trashNotes"));
   if (storedTrashNotes) {
-    trashNotes = storedTrashNotes; // Lade die Notizen ins Array
+    allNotes.trashNotes = storedTrashNotes;
   }
 }
 
 function loadArchivNotes() {
-  let storedArchivTitles = JSON.parse(localStorage.getItem("archivTitle"));
+  let storedArchivTitles = JSON.parse(localStorage.getItem("archivNoteTitles"));
   if (storedArchivTitles) {
-    archivTitle = storedArchivTitles; // Lade die Notizen ins Array
+    allNotes.archivNoteTitles = storedArchivTitles;
   }
   let storedArchivNotes = JSON.parse(localStorage.getItem("archivNote"));
   if (storedArchivNotes) {
-    archivNote = storedArchivNotes; // Lade die Notizen ins Array
+    allNotes.archivNote = storedArchivNotes;
   }
 }
-
-//notizen archivieren

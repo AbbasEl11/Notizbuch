@@ -8,29 +8,34 @@ function init() {
 }
 
 function getNoteTemplate(indexNote) {
-  return `<div class="notices"><h3> ${notesTitle[indexNote]}</h3>${notes[indexNote]}<div class="buttonContainer"><button class="archivButton" onclick="archiveNote(${indexNote})">A</button><button class="deleteButton" onclick="deleteAndDisplayNotice(${indexNote})">X</button></div></div>`;
-}
-
-function getTrashNoteTemplate(indexTrashNote) {
-  return `<div class="notices"><h3> ${trashNotesTitles[indexTrashNote]}</h3> ${trashNotes[indexTrashNote]}<div class="buttonContainer"><button class="deleteButton" onclick="completeDeleteNote(${indexTrashNote})">X</button> </div></div>`;
+  return `<div class="notices"><h3> ${allNotes.notesTitles[indexNote]}</h3>${allNotes.notes[indexNote]}<div class="buttonContainer"><button class="archivButton" onclick="moveNote(${indexNote}, 'notes', 'archivNote')">A</button><button class="deleteButton" onclick="moveNote(${indexNote}, 'notes', 'trashNotes')">X</button></div></div>`;
 }
 
 function getArchivNoteTemplate(indexArchivNote) {
-  return `<div class="notices"><h3> ${archivTitle[indexArchivNote]}</h3> ${archivNote[indexArchivNote]}<div class="buttonContainer"><button class="deleteButton" onclick="deleteArchivNote(${indexArchivNote})">X</button></div></div>`;
+  return `<div class="notices"><h3> ${allNotes.archivNoteTitles[indexArchivNote]}</h3> ${allNotes.archivNote[indexArchivNote]}<div class="buttonContainer"><button class="archivButton" onclick="moveNote(${indexArchivNote}, 'archivNote', 'notes')">R</button><button class="deleteButton" onclick="moveNote(${indexArchivNote}, 'archivNote', 'trashNotes')">X</button></div></div>`;
+}
+
+function getTrashNoteTemplate(indexTrashNote) {
+  return `<div class="notices"><h3> ${allNotes.trashNotesTitles[indexTrashNote]}</h3> ${allNotes.trashNotes[indexTrashNote]}<div class="buttonContainer"><button class="archivButton" onclick="moveNote(${indexTrashNote}, 'trashNotes', 'archivNote')">A</button><button class="deleteButton" onclick="deleteNote(${indexTrashNote})">X</button> </div></div>`;
 }
 
 function saveToLocalStorage() {
-  localStorage.setItem("notes", JSON.stringify(notes));
-  localStorage.setItem("notesTitle", JSON.stringify(notesTitle));
-  saveDeletedNotices();
+  localStorage.setItem("notes", JSON.stringify(allNotes.notes));
+  localStorage.setItem("notesTitles", JSON.stringify(allNotes.notesTitles));
 }
 
 function saveDeletedNotices() {
-  localStorage.setItem("trashNotesTitles", JSON.stringify(trashNotesTitles));
-  localStorage.setItem("trashNotes", JSON.stringify(trashNotes));
+  localStorage.setItem(
+    "trashNotesTitles",
+    JSON.stringify(allNotes.trashNotesTitles)
+  );
+  localStorage.setItem("trashNotes", JSON.stringify(allNotes.trashNotes));
 }
 
 function saveArchiveNotes() {
-  localStorage.setItem("archivTitle", JSON.stringify(archivTitle));
-  localStorage.setItem("archivNote", JSON.stringify(archivNote));
+  localStorage.setItem(
+    "archivNoteTitles",
+    JSON.stringify(allNotes.archivNoteTitles)
+  );
+  localStorage.setItem("archivNote", JSON.stringify(allNotes.archivNote));
 }
