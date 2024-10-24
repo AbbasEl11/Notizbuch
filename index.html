@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Notizbuch</title>
+
+        <script src="./scripts/template.js"></script>
+        <script src="./scripts/script.js"></script>
+
+
+        <link rel="stylesheet" href="./styles/style.css">
+        <link rel="stylesheet" href="./styles/notes.css">
+    </head>
+    <body onload="init()">
+        <div class="input-content">
+            <h1>Notizblock</h1>
+
+            <h2>Titel</h2>
+            <input id="titles_input" type="text" placeholder="Gib ein Titel ein">
+            <h2>Notiz</h2>
+            <input id="note_input" type="text" placeholder="Gib eine Notiz ein">
+            <p></p>
+            <button class="saveButton" onclick="saveData()">Notiz Speichern</button>
+        </div>
+        <h2>Gespeicherte Notizen</h2>
+        <div id="content">
+
+        </div>
+        <h2>Archiv</h2>
+        <div id="archiv_content">
+
+        </div>
+        <h2>Papierkorb</h2>
+        <div id="trash_content">
+
+        </div>
+
+
+    </body>
+</html>

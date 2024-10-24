@@ -1,0 +1,11 @@
+.notices {
+  background-color: #1d1d1d; /* Dunkler Hintergrund */
+  color: #f1f1f1; /* Helle Textfarbe */
+  padding: 30px; /* Innenabstand */
+  border-radius: 8px; /* Abgerundete Ecken */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Schatten für 3D-Effekt */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
