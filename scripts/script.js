@@ -52,10 +52,6 @@ function renderArchivNotes() {
   }
 }
 
-// eingabe vom user definieren
-// eingabe auslesen
-// eingabe speichern
-// eingabe anzeigen lassen
 
 function saveData() {
   let inputRef = document.getElementById("note_input");
@@ -75,32 +71,6 @@ function saveData() {
   inputTitle.value = "";
 }
 
-//notizen hinzufügen
-
-/*function addNote() {
-  let noteInputRef = document.getElementById("note_input");
-  let noteInput = noteInputRef.value;
-  //eingabe den notizen hinzufügen
-  notes.push(noteInput);
-
-  renderNotes();
-
-  noteInputRef.value = "";
-}*/
-
-//noitzen löschen
-// welche notiz muss gelöscht werden
-// wann muss die notiz gelöscht werden
-// anzeige updaten
-
-/*function deleteNote(indexNote) {
-  let trashNote = notes.splice(indexNote, 1);
-  trashNotes.push(trashNote);
-  let trashNoteTitles = notesTitle.splice(indexNote, 1);
-  trashNotesTitles.push(trashNoteTitles);
-  renderNotes();
-  renderTrashNotes();
-}*/
 
 function deleteAndDisplayNotice(i) {
   if (i >= 0 && i < notes.length) {
